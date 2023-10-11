@@ -41,7 +41,11 @@ var localStream = null;
 var soundMeter  = null;
 var containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
 
-var bgvideo = document.getElementById('bgvideo');
+var bgvideo = document.getElementById('bgvideo').addEventListener('videoended',videoEndedHandler,false);;
+
+function videoEndedHandler(e) {
+    document.getElementById("stop").click();
+}
 
 if (!navigator.mediaDevices.getUserMedia){
 	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Firefox or Chrome');
