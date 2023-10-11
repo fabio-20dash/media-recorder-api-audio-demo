@@ -90,3 +90,8 @@ audio {
   margin-top: 0.5rem;
   font-size: 80%;
 }
+
+video {
+  width: 100%;
+  max-height: 100%;
+}

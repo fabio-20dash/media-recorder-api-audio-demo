@@ -13,10 +13,20 @@
   </head>
   <body>
     <h1>20ôke do Diguiriguiriguiê-ê</h1>
+    <div id="player-overlay">
+      <video id="bgvideo">
+          <source src="video.mp4" />
+          <!--<source src="../static/video/10s.webm" type='video/webm; codecs="vp8, vorbis"' />
+          <source src="../static/video/10s.ogv" type='video/ogg; codecs="theora, vorbis"' />-->
+      </video>    
+  </div>
+  <video id="live" controls autoplay playsinline muted></video> <video id="playback" controls autoplay></video><br>
+		
+
     <div style="max-width: 28em;">
     	<div id="controls">
     	 <button id="recordButton">Start</button>
-    	 <button id="pauseButton" disabled>Pause</button>
+    	 <!--<button id="pauseButton" disabled>Pause</button>-->
     	 <button id="stopButton" disabled>Stop</button>
       </div>
       <div id="formats"></div>

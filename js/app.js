@@ -8,12 +8,12 @@ var extension;
 
 var recordButton = document.getElementById("recordButton");
 var stopButton = document.getElementById("stopButton");
-var pauseButton = document.getElementById("pauseButton");
+// var pauseButton = document.getElementById("pauseButton");
 
 //add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
-pauseButton.addEventListener("click", pauseRecording);
+// pauseButton.addEventListener("click", pauseRecording);
 
 // true on chrome, false on firefox
 console.log("audio/webm:"+MediaRecorder.isTypeSupported('audio/webm;codecs=opus'));
@@ -26,12 +26,13 @@ if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
 	extension="ogg"
 }
 
-var bgaudio = new Audio("audio.wav");
-
+// var bgaudio = new Audio("audio.wav");
+var bgvideo = document.getElementById('bgvideo');
 
 function startRecording() {
 	// bgaudio.play();
 
+	
 	console.log("recordButton clicked");
 
 	/*
@@ -54,7 +55,7 @@ function startRecording() {
 
 	recordButton.disabled = true;
 	stopButton.disabled = false;
-	pauseButton.disabled = false;
+	// pauseButton.disabled = false;
 
 	/*
     	We're using the standard promise based getUserMedia() 
@@ -63,7 +64,13 @@ function startRecording() {
 
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
 		console.log("getUserMedia() success, stream created, initializing MediaRecorder");
-		bgaudio.play();
+		// bgaudio.play();
+		
+		bgvideo.play();
+
+		// onclick="this.paused ? this.play() : this.pause(); arguments[0].preventDefault();"
+	
+
 		/*  assign to gumStream for later use  */
 		gumStream = stream;
 
@@ -112,25 +119,10 @@ function startRecording() {
 	  	//enable the record button if getUserMedia() fails
     	recordButton.disabled = false;
     	stopButton.disabled = true;
-    	pauseButton.disabled = true
+    	// pauseButton.disabled = true
 	});
 }
 
-function pauseRecording(){
-	console.log("pauseButton clicked recorder.state=",recorder.state );
-	if (recorder.state=="recording"){
-		//pause
-		recorder.pause();
-		bgaudio.pause();
-		pauseButton.innerHTML="Resume";
-	}else if (recorder.state=="paused"){
-		//resume
-		recorder.resume();
-		bgaudio.play();
-		pauseButton.innerHTML="Pause";
-
-	}
-}
 
 function stopRecording() {
 	console.log("stopButton clicked");
@@ -138,12 +130,14 @@ function stopRecording() {
 	//disable the stop button, enable the record too allow for new recordings
 	stopButton.disabled = true;
 	recordButton.disabled = false;
-	pauseButton.disabled = true;
+	// pauseButton.disabled = true;
 
 	//reset button just in case the recording is stopped while paused
-	pauseButton.innerHTML="Pause";
+	// pauseButton.innerHTML="Pause";
 	
-	bgaudio.pause();
+	// bgaudio.pause();
+	// bgaudio.pause();
+	bgvideo.pause();
 	//tell the recorder to stop the recording
 	recorder.stop();
 
