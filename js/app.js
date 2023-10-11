@@ -36,7 +36,7 @@ function startRecording() {
 	*/
     
     var constraints = {
-		audio: true,
+		audio: false,
 		autoGainControl: false,
 		echoCancellation: false,
 		googAutoGainControl: false,
