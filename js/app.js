@@ -30,7 +30,7 @@ var bgaudio = new Audio("audio.wav");
 
 
 function startRecording() {
-	bgaudio.play();
+	// bgaudio.play();
 
 	console.log("recordButton clicked");
 
@@ -40,6 +40,7 @@ function startRecording() {
 	*/
     
     var constraints = {
+		video: false,
 		// audio: { autoGainControl: false, channelCount: 1, echoCancellation: false, googAutoGainControl: false, latency: 0, noiseSuppression: false, sampleRate: 48000, sampleSize: 16, volume: 1.0 }
 		audio: {
 			noiseSuppression: false,
@@ -62,7 +63,7 @@ function startRecording() {
 
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
 		console.log("getUserMedia() success, stream created, initializing MediaRecorder");
-
+		bgaudio.play();
 		/*  assign to gumStream for later use  */
 		gumStream = stream;
 
