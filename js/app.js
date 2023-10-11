@@ -41,7 +41,7 @@ function startRecording() {
 		echoCancellation: false,
 		googAutoGainControl: false,
 		noiseSuppression: false,
-		suppressLocalAudioPlayback: true
+		suppressLocalAudioPlayback: false
 	}
 
  	/*
