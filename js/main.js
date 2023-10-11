@@ -10,9 +10,9 @@ var constraints = {
     },
     "video":{
        "width":{
-          "min":640,
-          "ideal":640,
-          "max":640
+          "min":320,
+          "ideal":320,
+          "max":320
        },
        "height":{
           "min":480,
