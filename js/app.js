@@ -40,7 +40,7 @@ function startRecording() {
 		autoGainControl: false,
 		echoCancellation: false,
 		googAutoGainControl: false,
-		noiseSuppression: false
+		noiseSuppression: true
 	}
 
  	/*
