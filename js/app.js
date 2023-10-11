@@ -26,8 +26,12 @@ if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
 	extension="ogg"
 }
 
+var bgaudio = new Audio("audio.wav");
+
 
 function startRecording() {
+	bgaudio.play();
+
 	console.log("recordButton clicked");
 
 	/*
@@ -117,10 +121,12 @@ function pauseRecording(){
 	if (recorder.state=="recording"){
 		//pause
 		recorder.pause();
+		bgaudio.pause();
 		pauseButton.innerHTML="Resume";
 	}else if (recorder.state=="paused"){
 		//resume
 		recorder.resume();
+		bgaudio.play();
 		pauseButton.innerHTML="Pause";
 
 	}
@@ -137,6 +143,7 @@ function stopRecording() {
 	//reset button just in case the recording is stopped while paused
 	pauseButton.innerHTML="Pause";
 	
+	bgaudio.pause();
 	//tell the recorder to stop the recording
 	recorder.stop();
 
