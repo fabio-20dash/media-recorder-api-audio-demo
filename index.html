@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<base target="_blank">
+	<title>Media Recorder API Demo - addpipe.com</title>
+		
+	<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+<div>
+	<h1>20ôke do Diguiriguiriguiê-ê</h1>
+	<div>
+
+		<div id="controls">
+			<button id="rec" onclick="onBtnRecordClicked()">Começar</button>
+			<button id="stop"  onclick="onBtnStopClicked()" disabled>Finish</button>
+			<!--<button id="stateButton" onclick="onStateClicked()">trace state</button>-->
+		</div>
+    <div id="player-overlay">
+      <video id="bgvideo">
+          <!--<source src="video-short.mp4" />-->
+          <source src="video.mp4" />
+          <!--<source src="../static/video/10s.webm" type='video/webm; codecs="vp8, vorbis"' />
+          <source src="../static/video/10s.ogv" type='video/ogg; codecs="theora, vorbis"' />-->
+      </video>    
+    </div>
+		<video id="live" controls autoplay playsinline muted></video> 
+    
+
+	</div>
+	<a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
+  <video id="playback" controls autoplay></video><br>
+
+	<p id="data" style="display:none"></p>
+	<script src="js/adapter-latest.js"></script>
+	<script src="js/main.js"></script>
+</div>
+
+</body>
+</html>
