@@ -92,3 +92,4 @@ lerna-debug.log
 Thumbs.db
 
 *.kdenlive
+git-push.sh
