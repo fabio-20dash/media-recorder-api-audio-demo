@@ -89,7 +89,6 @@ video {
 #controls {
   display: flex;
   margin-top: 2rem;
-  max-width: 28em;
 }
 
 button {
@@ -108,6 +107,10 @@ button {
   color:#ffffff;
   font-weight: bold;
   font-size: 1rem;
+  padding: 50px;
+}
+button#rec {
+  width: 100%
 }
 button:hover, button:focus {
   outline: none;
