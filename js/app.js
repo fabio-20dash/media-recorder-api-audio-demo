@@ -40,12 +40,11 @@ function startRecording() {
 	*/
     
     var constraints = {
-		audio: true,
-		autoGainControl: true,
-		echoCancellation: true,
-		googAutoGainControl: true,
-		noiseSuppression: true,
-		suppressLocalAudioPlayback: true
+		// audio: { autoGainControl: false, channelCount: 1, echoCancellation: false, googAutoGainControl: false, latency: 0, noiseSuppression: false, sampleRate: 48000, sampleSize: 16, volume: 1.0 }
+		audio: {
+			noiseSuppression: false,
+			echoCancellation: false,
+		}
 	}
 
  	/*
@@ -54,7 +53,7 @@ function startRecording() {
 
 	recordButton.disabled = true;
 	stopButton.disabled = false;
-	pauseButton.disabled = false
+	pauseButton.disabled = false;
 
 	/*
     	We're using the standard promise based getUserMedia() 
@@ -68,9 +67,9 @@ function startRecording() {
 		gumStream = stream;
 
 		var options = {
-	      audioBitsPerSecond :  256000,
-	      videoBitsPerSecond : 2500000,
-	      bitsPerSecond:       2628000,
+	    //   audioBitsPerSecond :  256000,
+	    //   videoBitsPerSecond : 2500000,
+	    //   bitsPerSecond:       2628000,
 	      mimeType : 'audio/'+extension+';codecs=opus'
 	    }
 
