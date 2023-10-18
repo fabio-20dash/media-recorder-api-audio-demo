@@ -3,45 +3,54 @@
 /* globals MediaRecorder */
 // Spec is at http://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
 
-var constraints = {
-    "audio": {
-        noiseSuppression: false,
-        echoCancellation: false
-    },
-    "video":{
-       "width":{
-          "min":320,
-          "ideal":320,
-          "max":320
-       },
-       "height":{
-          "min":480,
-          "ideal":480,
-          "max":480
-       },
-       "framerate":60
-    }
- }
+const constraints = {
+	"audio": {
+		noiseSuppression: false,
+		echoCancellation: false
+	},
+	"video": {
+		"width": {
+			"min": 320,
+			"ideal": 320,
+			"max": 320
+		},
+		"height": {
+			"min": 480,
+			"ideal": 480,
+			"max": 480
+		},
+		"framerate": 60
+	}
+};
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const videoId = urlParams.get('id')
 
-var recBtn = document.querySelector('button#rec');
-var stopBtn = document.querySelector('button#stop');
+if(!videoId) {
+	let errorContent = 'Missing videoId as URL query param. Ex: ?id=234791cc-7708-4b28-ad33-0d5c4576b6e9';
+	document.getElementsByTagName('body')[0].innerHTML = errorContent;
+	throw new Error(errorContent);
+}
 
-var liveVideoElement = document.querySelector('#live');
-var playbackVideoElement = document.querySelector('#playback');
-var dataElement = document.querySelector('#data');
-var downloadLink = document.querySelector('a#downloadLink');
+let recBtn = document.querySelector('button#rec');
+let stopBtn = document.querySelector('button#stop');
+
+let liveVideoElement = document.querySelector('#live');
+let playbackVideoElement = document.querySelector('#playback');
+let dataElement = document.querySelector('#data');
+let downloadLink = document.querySelector('a#downloadLink');
 
 liveVideoElement.controls = false;
 playbackVideoElement.controls=false;
 
-var mediaRecorder;
-var chunks = [];
-var count = 0;
-var localStream = null;
-var soundMeter  = null;
-var containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
+let mediaRecorder;
+let chunks = [];
+let count = 0;
+let localStream = null;
+let soundMeter  = null;
+let containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
 
-var bgvideo = document.getElementById('bgvideo')
+let bgvideo = document.getElementById('bgvideo')
 document.getElementById('bgvideo').addEventListener('ended',videoEndedHandler,false);
 
 function videoEndedHandler(e) {
@@ -102,6 +111,7 @@ if (!navigator.mediaDevices.getUserMedia){
 	}
 }
 
+
 function onBtnRecordClicked (){
 	if (localStream == null) {
 		alert('Could not get local stream from mic/camera');
@@ -117,16 +127,17 @@ function onBtnRecordClicked (){
 			/*
 				MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
 			*/
+			let options = {};
 			if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-			  var options = {mimeType: 'video/webm;codecs=vp9'};
+			  options = {mimeType: 'video/webm;codecs=vp9'};
 			} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-			  var options = {mimeType: 'video/webm;codecs=h264'};
+			  options = {mimeType: 'video/webm;codecs=h264'};
 			} else  if (MediaRecorder.isTypeSupported('video/webm')) {
-			  var options = {mimeType: 'video/webm'};
+			  options = {mimeType: 'video/webm'};
 			} else  if (MediaRecorder.isTypeSupported('video/mp4')) {
 			  //Safari 14.0.2 has an EXPERIMENTAL version of MediaRecorder enabled by default
 			  containerType = "video/mp4";
-			  var options = {mimeType: 'video/mp4'};
+			  options = {mimeType: 'video/mp4'};
 			}
 			log('Using '+options.mimeType);
             bgvideo.play();
@@ -165,39 +176,35 @@ function onBtnRecordClicked (){
 			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
 			//var recording = new Blob(chunks, {type: containerType});
-			var recording = new Blob(chunks, {type: mediaRecorder.mimeType});
-			
+			let recording = new Blob(chunks, {type: mediaRecorder.mimeType});
+
+			//making request
+			let xhr = new XMLHttpRequest();
+			//creating form data to append files
+			let fd = new FormData();
+			//append the recorded blob
+			fd.append("file",recording, 'video-'+videoId+'.webm');
+			//send data to server..............
+			xhr.open('PATCH', 'http://127.0.0.1:8000/api/video/' + videoId + '/', recording)
+
+			xhr.send(fd);
 
 			downloadLink.href = URL.createObjectURL(recording);
 
-			/* 
-				srcObject code from https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject
-			*/
 
-			/*if ('srcObject' in playbackVideoElement) {
-			  try {
-			    playbackVideoElement.srcObject = recording;
-			  } catch (err) {
-			    if (err.name != "TypeError") {
-			      throw err;
-			    }*/
-			    // Even if they do, they may only support MediaStream
-			    playbackVideoElement.src = URL.createObjectURL(recording);
-			/*  }
-			} else {
-			  playbackVideoElement.src = URL.createObjectURL(recording);
-			} */
+			playbackVideoElement.src = URL.createObjectURL(recording);
 
 			playbackVideoElement.controls = true;
 			playbackVideoElement.play();
 
-			var rand =  Math.floor((Math.random() * 10000000));
+			let rand =  Math.floor((Math.random() * 10000000));
+			let name = '';
 			switch(containerType){
 				case "video/mp4":
-					var name  = "video_"+rand+".mp4" ;
+					name  = "video_"+rand+".mp4" ;
 					break;
 				default:
-					var name  = "video_"+rand+".webm" ;
+					name  = "video_"+rand+".webm" ;
 			}
 
 			downloadLink.innerHTML = 'Download '+name;
