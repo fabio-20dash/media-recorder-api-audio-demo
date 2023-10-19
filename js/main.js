@@ -3,6 +3,8 @@
 /* globals MediaRecorder */
 // Spec is at http://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
 
+const apiVideoPostUrlBase = 'http://127.0.0.1:8000/api/video/';
+
 const constraints = {
 	"audio": {
 		noiseSuppression: false,
@@ -185,7 +187,7 @@ function onBtnRecordClicked (){
 			//append the recorded blob
 			fd.append("file",recording, 'video-'+videoId+'.webm');
 			//send data to server..............
-			xhr.open('PATCH', 'http://127.0.0.1:8000/api/video/' + videoId + '/', recording)
+			xhr.open('PATCH', apiVideoPostUrlBase + videoId + '/', recording)
 
 			xhr.send(fd);
 
