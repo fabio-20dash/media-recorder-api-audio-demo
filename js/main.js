@@ -3,7 +3,8 @@
 /* globals MediaRecorder */
 // Spec is at http://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
 
-const apiVideoPostUrlBase = 'http://127.0.0.1:8000/api/video/';
+// const apiVideoPostUrlBase = 'http://127.0.0.1:8000/api/video/';
+const apiVideoPostUrlBase = 'http://karaokeype.us-east-1.elasticbeanstalk.com/api/video/';
 
 const constraints = {
 	"audio": {
